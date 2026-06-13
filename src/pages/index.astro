@@ -1,13 +1,13 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import MainLayout from '../layouts/MainLayout.astro';
 import GameCard from '../components/GameCard.astro';
 import { getCollection } from 'astro:content';
 
 const games = await getCollection('blog');
-const sortedGames = games.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const sortedGames = games.sort((a: any, b: any) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
 ---
 
-<Layout 
+<MainLayout 
   title="Inicio" 
   description="Bienvenidos al blog de videojuegos definitivo."
 >
@@ -22,15 +22,15 @@ const sortedGames = games.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDa
 
   <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto px-4">
     {
-      sortedGames.map((game) => (
+      sortedGames.map((game: any) => (
         <GameCard 
           title={game.data.title}
           rating={game.data.rating}
           platform={game.data.platform}
           image={game.data.image}
-          href={`/blog/${game.slug}`}
+          href={`/blog/${game.id}`}
         />
       ))
     }
   </div>
-</Layout>
+</MainLayout>

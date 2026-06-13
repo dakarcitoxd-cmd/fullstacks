@@ -1,0 +1,58 @@
+---
+// src/pages/blog/[slug].astro
+import { getCollection, render } from 'astro:content'; // <-- Añadimos "render" aquí
+import MainLayout from '../../layouts/MainLayout.astro';
+
+export async function getStaticPaths() {
+  const gameEntries = await getCollection('blog');
+  return gameEntries.map((entry: any) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props as any;
+
+// Cambio fundamental de Astro V6: pasamos el entry como argumento a la función render()
+const { Content } = await render(entry); 
+---
+
+<MainLayout 
+  title={entry.data.title} 
+  description={entry.data.description}
+>
+  <article class="max-w-4xl mx-auto mt-10 px-4">
+    <a href="/" class="text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition inline-flex items-center gap-2 mb-8">
+      &larr; Volver al inicio
+    </a>
+
+    <header class="mb-8">
+      <div class="flex flex-wrap gap-3 items-center text-sm text-slate-400 mb-3 font-mono">
+        <span class="bg-slate-800 text-slate-200 px-3 py-1 rounded-full">{entry.data.platform}</span>
+        <span>&bull;</span>
+        <span>{new Date(entry.data.pubDate).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+      </div>
+      
+      <div class="flex justify-between items-start gap-4 mb-6">
+        <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-slate-100 leading-none">
+          {entry.data.title}
+        </h1>
+        <div class="bg-indigo-600 text-white font-mono font-bold text-xl md:text-2xl px-4 py-2 rounded-xl shadow-lg">
+          {entry.data.rating}/10
+        </div>
+      </div>
+    </header>
+
+    <div class="aspect-video rounded-3xl overflow-hidden border border-slate-800 mb-12 shadow-2xl">
+      <img 
+        src={entry.data.image} 
+        alt={entry.data.title} 
+        class="w-full h-full object-cover"
+      />
+    </div>
+
+    <div class="prose prose-slate prose-invert max-w-none text-slate-300 text-lg leading-relaxed space-y-6">
+      <Content />
+    </div>
+  </article>
+</MainLayout>

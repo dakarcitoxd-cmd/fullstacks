@@ -1,47 +1,134 @@
 ---
+// src/layouts/Layout.astro
+
+import { ClientRouter } from 'astro:transitions';
+
 interface Props {
-	title: string;
-	description?: string;
+  title: string;
+  description?: string;
 }
 
-const { 
-  title, 
-  description = "Análisis, noticias y reseñas del mundo de los videojuegos" 
-} = Astro.props;
+const { title, description = "El blog definitivo de tecnología y videojuegos" } = Astro.props;
 
 import '../styles/global.css' 
 ---
 
-<!doctype html>
-<html lang="es">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content={description} />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="" />
-		<meta name="generator" content={Astro.generator} />
-		<title>{title} | Gaming Blog</title>
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;700&display=swap" rel="stylesheet">
-	</head>
-	<body class="bg-slate-950 text-slate-100 font-['Urbanist'] antialiased">
-		
-    <nav class="p-6 border-b border-slate-800">
-      <div class="max-w-7xl mx-auto flex justify-between items-center">
-        <a href="/" class="text-2xl font-bold text-indigo-500">GAMER<span>BLOG</span></a>
-        <div class="space-x-6 text-sm uppercase tracking-widest">
-          <a href="#" class="hover:text-indigo-400 transition">Noticias</a>
-          <a href="#" class="hover:text-indigo-400 transition">Análisis</a>
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} | GamerBlog</title>
+    
+    <ClientRouter /> <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-[#030712] text-slate-100 font Im['Urbanist'] min-h-screen relative overflow-x-hidden selection:bg-cyan-500/30">
+    
+    <div class="absolute top-0 left-[-10%] w-[600px] h-[600px] bg-purple-900/15 rounded-full blur-[120px] pointer-events-none z-0"></div>
+
+    <header class="border-b border-slate-900/80 bg-[#030712]/70 backdrop-blur-md sticky top-0 z-50 w-full">
+      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <a href="/" class="text-2xl font-extrabold tracking-tight text-white">
+          Ai<span class="text-cyan-400">Biz</span>
+        </a>
+        <nav class="hidden md:flex items-center gap-8 text-[15px] font-medium text-slate-300">
+          <a href="/" class="text-cyan-400 flex items-center gap-1">Home <span class="text-[10px]">▼</span></a>
+          <a href="#" class="hover:text-white flex items-center gap-1">Pages <span class="text-[10px]">▼</span></a>
+          <a href="#" class="hover:text-white">About Us</a>
+          <a href="#" class="hover:text-white">Blog</a>
+          <a href="#" class="hover:text-white flex items-center gap-1">Portfolio <span class="text-[10px]">▼</span></a>
+          <a href="#" class="hover:text-white">Contact</a>
+        </nav>
+        <div class="flex items-center gap-5">
+          <button class="text-slate-300 hover:text-white p-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.603 10.601Z" />
+            </svg>
+          </button>
+          <a href="#" class="border border-slate-700 hover:border-white hover:bg-white hover:text-black text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-all duration-300">
+            Start Now
+          </a>
         </div>
       </div>
-    </nav>
+    </header>
 
-    <main class="max-w-7xl mx-auto p-6">
+    <main class="relative z-10">
       <slot />
     </main>
 
-    <footer class="p-10 mt-20 border-t border-slate-800 text-center text-slate-500 text-sm">
-      &copy; {new Date().getFullYear()} Gaming Blog. Creado con Astro y Bun.
+    <footer class="bg-[#030712] border-t border-slate-900/60 mt-32 relative z-10 text-[15px]">
+      <div class="max-w-7xl mx-auto px-6 pt-20 pb-12">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-start mb-20">
+          
+          <div class="lg:col-span-4 flex flex-col items-start pr-0 lg:pr-8">
+            <a href="/" class="text-3xl font-extrabold tracking-tight text-white mb-6">
+              Ai<span class="text-cyan-400">Biz</span>
+            </a>
+            <p class="text-xs font-bold tracking-wider text-slate-300 uppercase leading-relaxed max-w-xs mb-8">
+              AIBIZ CAN ASSIST IN GENERATING NEW IDEAS, AND DESIGNS
+            </p>
+            <a href="#" class="bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-bold px-8 py-4 rounded-full shadow-[0_4px_20px_rgba(34,211,238,0.2)] transition duration-300 text-sm">
+              Start Generate Now
+            </a>
+          </div>
+
+          <div class="hidden lg:block lg:col-span-1 justify-self-center h-full min-h-[180px] w-[1px] bg-slate-800/60"></div>
+
+          <div class="lg:col-span-7 grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-6 w-full">
+            
+            <div class="md:col-span-5 space-y-4 text-slate-300 font-medium">
+              <h4 class="text-white font-bold text-lg mb-2">Get in Touch With Us &rarr;</h4>
+              <p class="leading-relaxed text-slate-400">
+                27 Division St, New York,<br />
+                NY 10002, USA
+              </p>
+              <p class="text-slate-300 font-semibold hover:text-cyan-400 transition">
+                <a href="tel:+1800123456789">+1 800 123 456 789</a>
+              </p>
+              <p class="text-slate-300 font-semibold hover:text-cyan-400 transition underline decoration-slate-700 underline-offset-4">
+                <a href="mailto:aibiz@mail.com">aibiz@mail.com</a>
+              </p>
+            </div>
+
+            <div class="md:col-span-7 flex flex-col justify-between">
+              <div>
+                <h4 class="text-slate-400 text-xs font-bold tracking-wider uppercase mb-4">
+                  Get news & updates
+                </h4>
+                <div class="relative border-b border-slate-700 pb-3 mb-6 flex items-center justify-between">
+                  <input 
+                    type="email" 
+                    placeholder="Your email address" 
+                    class="bg-transparent text-white placeholder-slate-600 focus:outline-none w-full pr-10 text-[15px]"
+                  />
+                  <span class="text-slate-500 font-mono text-xl absolute right-0">@</span>
+                </div>
+                <p class="text-slate-500 text-sm leading-relaxed mb-6">
+                  Our expertise, as well as our passion for web design, sets us apart from other agencies.
+                </p>
+              </div>
+
+              <div class="flex items-center gap-8 font-semibold text-slate-300">
+                <a href="#" class="hover:text-cyan-400 transition">Instagram</a>
+                <a href="#" class="hover:text-cyan-400 transition">Facebook</a>
+                <a href="#" class="hover:text-cyan-400 transition">Twitter</a>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="border-t border-slate-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+          <p>Copyright &copy; 2026 aibiz by Kitpapa. All Rights Reserved</p>
+        </div>
+
+      </div>
     </footer>
 
-	</body>
+  </body>
 </html>

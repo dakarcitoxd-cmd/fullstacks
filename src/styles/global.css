@@ -1,1 +1,7 @@
+/* src/styles/global.css */
 @import "tailwindcss";
+
+@theme {
+  /* Esto sobreescribe la fuente sans predeterminada de Tailwind v4 por DM Sans */
+  --font-sans: 'DM Sans', sans-serif;
+}

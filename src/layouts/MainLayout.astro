@@ -1,7 +1,7 @@
 ---
-// src/layouts/Layout.astro
-
 import { ClientRouter } from 'astro:transitions';
+import Navbar from '../components/Navbar.astro';
+import '../styles/global.css';
 
 interface Props {
   title: string;
@@ -9,54 +9,32 @@ interface Props {
 }
 
 const { title, description = "El blog definitivo de tecnología y videojuegos" } = Astro.props;
-
-import '../styles/global.css' 
 ---
 
 <!DOCTYPE html>
 <html lang="es" class="scroll-smooth">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="description" content={description} />
-    <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <title>{title} | GamerBlog</title>
-    
-    <ClientRouter /> <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  </head>
-  <body class="bg-[#030712] text-slate-100 font Im['Urbanist'] min-h-screen relative overflow-x-hidden selection:bg-cyan-500/30">
+  <meta charset="UTF-8" />
+  <meta name="description" content={description} />
+  <meta name="viewport" content="width=device-width" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <title>{title} | GamerBlog</title>
+  
+  <ClientRouter />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+
+</head>
+  <body class="bg-[#030712] text-slate-100 font-sans min-h-screen relative overflow-x-hidden selection:bg-cyan-500/30">
     
     <div class="absolute top-0 left-[-10%] w-[600px] h-[600px] bg-purple-900/15 rounded-full blur-[120px] pointer-events-none z-0"></div>
 
-    <header class="border-b border-slate-900/80 bg-[#030712]/70 backdrop-blur-md sticky top-0 z-50 w-full">
-      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <a href="/" class="text-2xl font-extrabold tracking-tight text-white">
-          Ai<span class="text-cyan-400">Biz</span>
-        </a>
-        <nav class="hidden md:flex items-center gap-8 text-[15px] font-medium text-slate-300">
-          <a href="/" class="text-cyan-400 flex items-center gap-1">Home <span class="text-[10px]">▼</span></a>
-          <a href="#" class="hover:text-white flex items-center gap-1">Pages <span class="text-[10px]">▼</span></a>
-          <a href="#" class="hover:text-white">About Us</a>
-          <a href="#" class="hover:text-white">Blog</a>
-          <a href="#" class="hover:text-white flex items-center gap-1">Portfolio <span class="text-[10px]">▼</span></a>
-          <a href="#" class="hover:text-white">Contact</a>
-        </nav>
-        <div class="flex items-center gap-5">
-          <button class="text-slate-300 hover:text-white p-2">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-              <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.603 10.601Z" />
-            </svg>
-          </button>
-          <a href="#" class="border border-slate-700 hover:border-white hover:bg-white hover:text-black text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-all duration-300">
-            Start Now
-          </a>
-        </div>
-      </div>
-    </header>
+    
+    <Navbar />
 
-    <main class="relative z-10">
+    <main class="relative z-10" transition:animate="fade">
       <slot />
     </main>
 

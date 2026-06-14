@@ -1,0 +1,57 @@
+---
+// src/components/Navbar.astro
+---
+<header 
+  class="top-0 left-0 w-full z-50 text-white border-b navbar-scroll-effect"
+  transition:persist="main-navigation"
+>
+  <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+    <a href="/" class="text-2xl font-extrabold tracking-tight text-white">
+      Ai<span class="text-cyan-400">Biz</span>
+    </a>
+    
+    <nav class="hidden md:flex items-center gap-8 text-[15px] font-medium text-slate-300">
+      <a href="/" class="text-cyan-400 flex items-center gap-1">Home <span class="text-[10px]">▼</span></a>
+      <a href="#" class="hover:text-white flex items-center gap-1">Pages <span class="text-[10px]">▼</span></a>
+      <a href="#" class="hover:text-white">About Us</a>
+      <a href="#" class="hover:text-white">Blog</a>
+      <a href="#" class="hover:text-white flex items-center gap-1">Portfolio <span class="text-[10px]">▼</span></a>
+      <a href="#" class="hover:text-white">Contact</a>
+    </nav>
+    
+    <div class="flex items-center gap-5">
+      <button class="text-slate-300 hover:text-white p-2">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.603 10.601Z" />
+        </svg>
+      </button>
+      <a href="#" class="border border-slate-700 hover:border-white hover:bg-white hover:text-black text-white text-sm font-semibold px-6 py-2.5 rounded-full transition-all duration-300">
+        Start Now
+      </a>
+    </div>
+  </div>
+</header>
+
+<style is:global>
+  /* 1. Estado inicial arriba del todo (Totalmente transparente) */
+  .navbar-scroll-effect {
+    background-color: rgba(3, 7, 18, 0);
+    border-color: rgba(255, 255, 255, 0);
+    backdrop-filter: blur(0px);
+    -webkit-backdrop-filter: blur(0px);
+    
+    /* Vinculamos la animación directamente al progreso del scroll del navegador */
+    animation: trigger-blur linear both;
+    animation-timeline: scroll();
+    animation-range: 0px 100px; /* Se activa gradualmente en los primeros 100px */
+  }
+
+  /* 2. Estado final al bajar el scroll (Efecto cristal) */
+  @keyframes trigger-blur {
+    to {
+      background-color: rgba(0, 0, 0, 0.164); /* Fondo oscuro sutil */
+      backdrop-filter: blur(12px); /* El blur de regreso */
+      -webkit-backdrop-filter: blur(12px);
+    }
+  }
+</style>

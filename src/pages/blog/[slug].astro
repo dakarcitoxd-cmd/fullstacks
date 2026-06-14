@@ -1,7 +1,7 @@
 ---
 // src/pages/blog/[slug].astro
-import { getCollection, render } from 'astro:content'; // <-- Añadimos "render" aquí
-import MainLayout from '../../layouts/MainLayout.astro';
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/MainLayout.astro';
 
 export async function getStaticPaths() {
   const gameEntries = await getCollection('blog');
@@ -12,47 +12,212 @@ export async function getStaticPaths() {
 }
 
 const { entry } = Astro.props as any;
+const { Content } = await render(entry);
 
-// Cambio fundamental de Astro V6: pasamos el entry como argumento a la función render()
-const { Content } = await render(entry); 
+// Formateamos la fecha exactamente igual: "April 26, 2026"
+const formattedDate = new Date(entry.data.pubDate).toLocaleDateString('en-US', {
+  month: 'long',
+  day: 'numeric',
+  year: 'numeric'
+});
 ---
 
-<MainLayout 
-  title={entry.data.title} 
-  description={entry.data.description}
->
-  <article class="max-w-4xl mx-auto mt-10 px-4">
-    <a href="/" class="text-sm font-semibold text-indigo-400 hover:text-indigo-300 transition inline-flex items-center gap-2 mb-8">
-      &larr; Volver al inicio
-    </a>
+<Layout title={entry.data.title} description={entry.data.description}>
+<header class="relative w-full h-[65vh] min-h-[450px] flex items-end overflow-hidden border-b border-slate-900">
+    <img 
+      src={entry.data.image} 
+      alt={entry.data.title} 
+      class="absolute inset-0 w-full h-full object-cover"
+      transition:name={entry.data.title}
+    />
 
-    <header class="mb-8">
-      <div class="flex flex-wrap gap-3 items-center text-sm text-slate-400 mb-3 font-mono">
-        <span class="bg-slate-800 text-slate-200 px-3 py-1 rounded-full">{entry.data.platform}</span>
-        <span>&bull;</span>
-        <span>{new Date(entry.data.pubDate).toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
-      </div>
-      
-      <div class="flex justify-between items-start gap-4 mb-6">
-        <h1 class="text-4xl md:text-6xl font-bold tracking-tight text-slate-100 leading-none">
+    <div 
+      class="max-w-7xl mx-auto w-full px-6 pb-12 relative z-20 select-none text-shadow-sm"
+      transition:animate="fade"
+    >
+      <div class="animate-fade-up-slow">
+        <div class="inline-block bg-[#38bdf8] text-[#030712] text-xs font-bold px-3 py-1 uppercase tracking-wide mb-6">
+          {formattedDate}
+        </div>
+
+        <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-white tracking-tight leading-tight max-w-5xl mb-6 dropping-shadow">
           {entry.data.title}
         </h1>
-        <div class="bg-indigo-600 text-white font-mono font-bold text-xl md:text-2xl px-4 py-2 rounded-xl shadow-lg">
-          {entry.data.rating}/10
+
+        <div class="flex flex-wrap items-center gap-6 text-sm text-white font-medium dropping-shadow">
+          <span class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-[#38bdf8]">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+            </svg>
+            Chayon
+          </span>
+          <span class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-[#38bdf8]">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 0 0 3 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581a2.25 2.25 0 0 0 3.181 0l4.318-4.318a2.25 2.25 0 0 0 0-3.181l-9.58-9.581A2.25 2.25 0 0 0 9.568 3Z" />
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6Z" />
+            </svg>
+            {entry.data.platform}
+          </span>
+          <span class="flex items-center gap-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor" class="w-4 h-4 text-[#38bdf8]">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 0 1-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8Z" />
+            </svg>
+            No Comments
+          </span>
         </div>
       </div>
-    </header>
-
-    <div class="aspect-video rounded-3xl overflow-hidden border border-slate-800 mb-12 shadow-2xl">
-      <img 
-        src={entry.data.image} 
-        alt={entry.data.title} 
-        class="w-full h-full object-cover"
-      />
     </div>
+  </header>
+<div class="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
+    
+    <main class="lg:col-span-8 flex flex-col">
+      <article class="text-slate-300 text-[17px] leading-relaxed font-normal prose prose-invert prose-cyan max-w-none space-y-6">
+        <Content />
+      </article>
 
-    <div class="prose prose-slate prose-invert max-w-none text-slate-300 text-lg leading-relaxed space-y-6">
-      <Content />
-    </div>
-  </article>
-</MainLayout>
+      <div class="flex flex-wrap items-center justify-between border-t border-b border-slate-900/80 py-4 mt-12 gap-4">
+        <div class="flex flex-wrap gap-2">
+          {entry.data.platform.split('/').map((tag: string) => (
+            <span class="text-xs bg-slate-900 text-slate-400 px-3 py-1 font-medium rounded-full uppercase tracking-wider">
+              {tag.trim()}
+            </span>
+          ))}
+        </div>
+        <div class="flex items-center gap-4 text-slate-400 text-sm">
+          <a href="#" class="hover:text-white transition"><i class="fab fa-facebook-f"></i></a>
+          <a href="#" class="hover:text-white transition"><i class="fab fa-twitter"></i></a>
+          <a href="#" class="hover:text-white transition"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+      </div>
+    </main>
+
+    <aside class="lg:col-span-4 space-y-10 lg:sticky lg:top-28">
+      
+      <div class="bg-[#0b1329]/30 border border-slate-900/60 p-8 flex flex-col items-center text-center relative overflow-hidden group">
+        <div class="absolute -bottom-20 -right-20 w-40 h-40 bg-purple-500/5 rounded-full blur-3xl"></div>
+        <div class="w-24 h-24 rounded-full overflow-hidden mb-5 border-2 border-cyan-400 p-1">
+          <img src="https://avatars.githubusercontent.com/u/10000000?v=4" alt="Chayon" class="w-full h-full object-cover rounded-full" />
+        </div>
+        <h3 class="text-2xl font-bold text-white mb-1">Chayon</h3>
+        <p class="text-xs font-bold tracking-widest text-cyan-400 uppercase mb-5">Author of Blog</p>
+        <div class="flex items-center gap-5 text-slate-400">
+          <a href="#" class="hover:text-white transition" aria-label="Facebook">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/></svg>
+          </a>
+          <a href="#" class="hover:text-white transition" aria-label="Twitter">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/></svg>
+          </a>
+          <a href="#" class="hover:text-white transition" aria-label="YouTube">
+            <svg class="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="relative w-full">
+        <input 
+          type="text" 
+          placeholder="Search..." 
+          class="w-full bg-[#0b1329]/20 border border-slate-900 text-sm text-slate-200 pl-4 pr-10 py-3 rounded-none focus:outline-none focus:border-cyan-500/50 transition-colors"
+        />
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-slate-500 absolute right-4 top-1/2 -translate-y-1/2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 1 5.196 5.196a7.5 7.5 0 0 1 10.603 10.601Z" />
+        </svg>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-bold text-white mb-5 pb-2 border-b border-slate-900 tracking-tight">Categories</h4>
+        <ul class="space-y-3.5 text-sm font-medium text-slate-400">
+          <li class="flex items-center justify-between hover:text-cyan-400 transition cursor-pointer"><span>Trend</span><span class="text-xs text-slate-600">(05)</span></li>
+          <li class="flex items-center justify-between hover:text-cyan-400 transition cursor-pointer"><span>Technology</span><span class="text-xs text-slate-600">(03)</span></li>
+          <li class="flex items-center justify-between hover:text-cyan-400 transition cursor-pointer"><span>Images</span><span class="text-xs text-slate-600">(02)</span></li>
+          <li class="flex items-center justify-between hover:text-cyan-400 transition cursor-pointer"><span>Ideas</span><span class="text-xs text-slate-600">(04)</span></li>
+          <li class="flex items-center justify-between hover:text-cyan-400 transition cursor-pointer"><span>Art</span><span class="text-xs text-slate-600">(01)</span></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-bold text-white mb-6 pb-2 border-b border-slate-900 tracking-tight">Related Posts</h4>
+        <div class="space-y-5">
+          <div class="flex items-center gap-4 group cursor-pointer">
+            <div class="w-20 h-16 bg-slate-900 flex-shrink-0 overflow-hidden">
+              <img src={entry.data.image} alt="Related" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+            </div>
+            <div>
+              <h5 class="text-sm font-bold text-white line-clamp-2 leading-snug group-hover:text-cyan-400 transition">Exploring the Boundaries of Visual Creativity</h5>
+              <span class="text-[11px] text-slate-500 font-semibold mt-1 block uppercase">April 26, 2026</span>
+            </div>
+          </div>
+          <div class="flex items-center gap-4 group cursor-pointer">
+            <div class="w-20 h-16 bg-slate-900 flex-shrink-0 overflow-hidden">
+              <img src={entry.data.image} alt="Related" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" />
+            </div>
+            <div>
+              <h5 class="text-sm font-bold text-white line-clamp-2 leading-snug group-hover:text-cyan-400 transition">The AI Picture Generator Toolbox</h5>
+              <span class="text-[11px] text-slate-500 font-semibold mt-1 block uppercase">April 20, 2026</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-bold text-white mb-5 pb-2 border-b border-slate-900 tracking-tight">Popular Tags</h4>
+        <div class="flex flex-wrap gap-2">
+          {['art', 'creative', 'development', 'image', 'people', 'quality', 'tools'].map((tag) => (
+            <span class="text-[11px] font-bold bg-[#0b1329]/40 hover:bg-cyan-500 hover:text-black border border-slate-900 px-3 py-1.5 text-slate-400 uppercase tracking-wider cursor-pointer transition-all">
+              {tag}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <div>
+        <h4 class="text-lg font-bold text-white mb-5 pb-2 border-b border-slate-900 tracking-tight">Gallery</h4>
+        <div class="grid grid-cols-3 gap-2">
+          {[1, 2, 3, 4, 5, 6].map(() => (
+            <div class="aspect-square bg-slate-900 overflow-hidden relative group cursor-pointer">
+              <img src={entry.data.image} alt="Gallery item" class="w-full h-full object-cover group-hover:scale-110 transition duration-500" />
+              <div class="absolute inset-0 bg-cyan-500/10 opacity-0 group-hover:opacity-100 transition duration-300"></div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+    </aside>
+
+  </div>
+</Layout>
+
+<style is:global>
+
+    .dropping-shadow {
+  filter: drop-shadow(0px 1px 2px rgba(0, 0, 0, 0.5)) 
+          drop-shadow(0px 2px 6px rgba(0, 0, 0, 0.3));
+}
+
+    .animate-fade-up-slow {
+      animation: fadeUp 0.8s cubic-bezier(0.215, 0.610, 0.355, 1) both;
+      animation-delay: 0.15s; /* Espera un instante a que la imagen se acomode */
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+  article > p:first-of-type::first-letter {
+    font-size: 3.5rem;
+    font-weight: 800;
+    float: left;
+    line-height: 1;
+    margin-right: 0.75rem;
+    margin-top: 0.25rem;
+    color: #22d3ee; /* Color cian para la Drop Cap */
+    font-family: 'DM Sans', sans-serif;
+  }
+</style>

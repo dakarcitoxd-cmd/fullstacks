@@ -9,7 +9,7 @@ const sortedGames = games.sort((a: any, b: any) => b.data.pubDate.valueOf() - a.
 ---
 
 <Layout title="Home">
-  <div class="max-w-7xl mx-auto px-6 pt-24 pb-16">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-24 pb-16">
     
     <header class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
       <div>
@@ -26,7 +26,7 @@ const sortedGames = games.sort((a: any, b: any) => b.data.pubDate.valueOf() - a.
       </a>
     </header>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 pt-24 pb-16">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-x-6 gap-y-12 w-full">
       {
         sortedGames.map((game: any) => (
           <GameCard 
@@ -40,7 +40,4 @@ const sortedGames = games.sort((a: any, b: any) => b.data.pubDate.valueOf() - a.
           />
         ))
       }
-    </div>
-
-  </div>
-</Layout>
+    </div> </div> </Layout>
